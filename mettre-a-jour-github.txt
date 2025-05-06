@@ -1,0 +1,27 @@
+# Comment mettre à jour votre projet sur GitHub
+
+Après avoir fait des modifications à votre projet, suivez ces étapes :
+
+1. Ouvrez PowerShell ou l'invite de commande dans le dossier de votre projet
+   (C:\Users\AssitantQualite\Downloads\lotfiv1-main)
+
+2. Exécutez ces trois commandes :
+
+   ```
+   git add .
+   git commit -m "Description de vos modifications"
+   git push
+   ```
+
+   Remplacez "Description de vos modifications" par un message court décrivant 
+   ce que vous avez modifié.
+
+3. Si on vous demande de vous authentifier, entrez vos identifiants GitHub.
+
+C'est tout ! Vos modifications sont maintenant sur GitHub.
+
+Note : Si vous préférez une méthode plus simple, vous pouvez aussi exécuter :
+   ```
+   .\update-github.bat
+   ```
+Et suivre les instructions à l'écran. 
