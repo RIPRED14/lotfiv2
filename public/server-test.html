@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test de Serveur</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 800px; margin: 0 auto; }
+        h1 { color: #333; text-align: center; }
+        .card { 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            padding: 20px; 
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .pending { background-color: #fff3cd; border-color: #ffeeba; }
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .btn:hover { background: #0069d9; }
+        pre { 
+            background: #f8f9fa; 
+            padding: 10px; 
+            border-radius: 4px; 
+            overflow-x: auto;
+            font-size: 14px;
+        }
+        #results { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Test du Serveur et des Redirections</h1>
+    
+    <div class="card">
+        <h2>1. Test de Connectivité Serveur</h2>
+        <p>Cliquez sur le bouton pour tester si le serveur répond sur le port 8080:</p>
+        <button id="testServerBtn" class="btn">Tester le Serveur</button>
+        <div id="serverStatus" class="card pending">En attente de test...</div>
+    </div>
+    
+    <div class="card">
+        <h2>2. Test de Redirection</h2>
+        <p>Cette section va tester différentes méthodes de redirection:</p>
+        
+        <h3>Méthode HREF Standard</h3>
+        <a href="http://localhost:8080/sample-entry?bacterie=Entérobactéries&jour=Lundi&delai=24h&site=R1" class="btn" target="_blank">
+            Redirection HREF
+        </a>
+        
+        <h3>Méthode JavaScript (window.location)</h3>
+        <button id="jsRedirectBtn" class="btn">Redirection JS</button>
+        
+        <h3>Méthode JavaScript (window.location.replace)</h3>
+        <button id="jsReplaceBtn" class="btn">Redirection Replace</button>
+        
+        <h3>Méthode Formulaire (POST)</h3>
+        <form id="redirectForm" method="get" action="http://localhost:8080/sample-entry">
+            <input type="hidden" name="bacterie" value="Entérobactéries">
+            <input type="hidden" name="jour" value="Lundi">
+            <input type="hidden" name="delai" value="24h">
+            <input type="hidden" name="site" value="R1">
+            <button type="submit" class="btn">Redirection Formulaire</button>
+        </form>
+    </div>
+    
+    <div class="card">
+        <h2>3. Information Diagnostic</h2>
+        <button id="showInfoBtn" class="btn">Afficher les Infos</button>
+        <div id="diagnosticInfo"></div>
+    </div>
+    
+    <div id="results"></div>
+    
+    <script>
+        // Fonction pour ajouter un résultat
+        function addResult(message, isError = false) {
+            const results = document.getElementById('results');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = isError ? 'card error' : 'card success';
+            resultDiv.innerHTML = `<p>${message}</p>`;
+            results.appendChild(resultDiv);
+        }
+        
+        // Test de connectivité serveur
+        document.getElementById('testServerBtn').addEventListener('click', function() {
+            const serverStatus = document.getElementById('serverStatus');
+            serverStatus.className = 'card pending';
+            serverStatus.textContent = 'Test en cours...';
+            
+            fetch('http://localhost:8080', { 
+                mode: 'no-cors',
+                method: 'HEAD'
+            })
+            .then(function() {
+                serverStatus.className = 'card success';
+                serverStatus.textContent = '✅ Serveur accessible sur le port 8080!';
+                addResult('Test de serveur réussi. Le serveur répond sur le port 8080.');
+            })
+            .catch(function(error) {
+                serverStatus.className = 'card error';
+                serverStatus.innerHTML = `❌ Erreur de connexion au serveur:<br>${error.message}`;
+                addResult(`Erreur de connexion au serveur: ${error.message}`, true);
+            });
+        });
+        
+        // Redirection JavaScript
+        document.getElementById('jsRedirectBtn').addEventListener('click', function() {
+            addResult('Tentative de redirection via window.location.href...');
+            setTimeout(function() {
+                window.location.href = 'http://localhost:8080/sample-entry?bacterie=Entérobactéries&jour=Lundi&delai=24h&site=R1';
+            }, 1000);
+        });
+        
+        // Redirection Replace
+        document.getElementById('jsReplaceBtn').addEventListener('click', function() {
+            addResult('Tentative de redirection via window.location.replace...');
+            setTimeout(function() {
+                window.location.replace('http://localhost:8080/sample-entry?bacterie=Entérobactéries&jour=Lundi&delai=24h&site=R1');
+            }, 1000);
+        });
+        
+        // Afficher les informations de diagnostic
+        document.getElementById('showInfoBtn').addEventListener('click', function() {
+            const info = document.getElementById('diagnosticInfo');
+            info.innerHTML = `
+                <pre>
+User Agent: ${navigator.userAgent}
+Cookies Enabled: ${navigator.cookieEnabled}
+Platform: ${navigator.platform}
+Language: ${navigator.language}
+Window Location:
+  - href: ${window.location.href}
+  - host: ${window.location.host}
+  - hostname: ${window.location.hostname}
+  - port: ${window.location.port}
+  - protocol: ${window.location.protocol}
+  - pathname: ${window.location.pathname}
+</pre>
+            `;
+        });
+    </script>
+</body>
+</html> 

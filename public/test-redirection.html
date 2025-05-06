@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Redirection - Page Statique</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #d32f2f;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .red-section {
+            background-color: #ffebee;
+            border: 2px solid #ffcdd2;
+        }
+        .blue-section {
+            background-color: #e3f2fd;
+            border: 2px solid #bbdefb;
+        }
+        h2 {
+            margin-top: 0;
+        }
+        .button {
+            display: inline-block;
+            background-color: #d32f2f;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            margin: 10px 0;
+            text-align: center;
+        }
+        .button:hover {
+            background-color: #b71c1c;
+        }
+        .link-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .link {
+            color: #1976d2;
+            text-decoration: underline;
+            font-size: 18px;
+            font-weight: 500;
+        }
+        .link:hover {
+            color: #0d47a1;
+        }
+        .code-block {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            overflow-wrap: break-word;
+            margin: 10px 0;
+        }
+        .divider {
+            border-top: 1px solid #e0e0e0;
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Page de Test de Redirection (Static HTML)</h1>
+        
+        <div class="section red-section">
+            <h2>Test Direct avec HREF</h2>
+            <p>Cette section utilise des liens directs sans JavaScript. Cliquez pour tester:</p>
+            
+            <a href="http://localhost:8080/sample-entry?bacterie=Entérobactéries&jour=Lundi&delai=24h&site=R1" class="button">
+                TEST REDIRECTION: Entérobactéries (24h)
+            </a>
+        </div>
+
+        <div class="divider"></div>
+        
+        <div class="section blue-section">
+            <h2>Plusieurs liens à tester:</h2>
+            <div class="link-list">
+                <a href="http://localhost:8080/sample-entry?bacterie=Entérobactéries&jour=Lundi&delai=24h&site=R1" class="link">
+                    Entérobactéries (24h) - Lundi - R1
+                </a>
+                <a href="http://localhost:8080/sample-entry?bacterie=Levures%20et%20Moisissures&jour=Mardi&delai=5j&site=R2" class="link">
+                    Levures et Moisissures (5j) - Mardi - R2
+                </a>
+                <a href="http://localhost:8080/sample-entry?bacterie=Listeria&jour=Mercredi&delai=48h&site=BAIKO" class="link">
+                    Listeria (48h) - Mercredi - BAIKO
+                </a>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+        
+        <div class="section">
+            <h2>Liens directs (à copier-coller):</h2>
+            <div class="code-block">
+                http://localhost:8080/sample-entry?bacterie=Entérobactéries&jour=Lundi&delai=24h&site=R1
+            </div>
+            <div class="code-block">
+                http://localhost:8080/sample-entry?bacterie=Levures%20et%20Moisissures&jour=Mardi&delai=5j&site=R2
+            </div>
+            <div class="code-block">
+                http://localhost:8080/sample-entry?bacterie=Listeria&jour=Mercredi&delai=48h&site=BAIKO
+            </div>
+        </div>
+
+        <div class="divider"></div>
+        
+        <div class="section">
+            <h2>JavaScript direct</h2>
+            <p>Si les liens ne fonctionnent pas, essayez ces boutons qui utilisent JavaScript pour la redirection:</p>
+            
+            <button onclick="window.location.href='http://localhost:8080/sample-entry?bacterie=Entérobactéries&jour=Lundi&delai=24h&site=R1'" style="display:block; width:100%; padding:10px; margin:10px 0; background:#1976d2; color:white; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">
+                Redirection JS vers Entérobactéries
+            </button>
+            
+            <button onclick="window.open('http://localhost:8080/sample-entry?bacterie=Levures%20et%20Moisissures&jour=Mardi&delai=5j&site=R2', '_blank')" style="display:block; width:100%; padding:10px; margin:10px 0; background:#4caf50; color:white; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">
+                Redirection JS (nouvel onglet) vers Levures et Moisissures
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Script pour vérifier l'accès à l'URL
+        function testConnection() {
+            fetch('http://localhost:8080/sample-entry')
+                .then(response => {
+                    if (response.ok) {
+                        alert('La connexion au serveur est OK! Le serveur répond correctement.');
+                    } else {
+                        alert('Le serveur répond mais avec une erreur: ' + response.status);
+                    }
+                })
+                .catch(error => {
+                    alert('Erreur de connexion au serveur: ' + error.message);
+                });
+        }
+    </script>
+</body>
+</html> 

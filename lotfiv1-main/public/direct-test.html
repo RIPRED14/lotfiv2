@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Direct - Bacterie</title>
+    <style>
+        body { font-family: Arial; padding: 20px; text-align: center; }
+        .big-button { 
+            display: block; 
+            margin: 20px auto;
+            padding: 20px;
+            font-size: 24px;
+            background: red;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Page de Test Ultime</h1>
+    <p>Cliquez sur le bouton ci-dessous pour tester le lien:</p>
+    
+    <a href="http://localhost:8080/sample-entry?bacterie=Entérobactéries&jour=Lundi&delai=24h&site=R1" class="big-button">
+        REDIRECTION ENTÉROBACTÉRIES
+    </a>
+
+    <p>Si le bouton ne fonctionne pas, copiez cette URL:</p>
+    <textarea rows="3" style="width: 80%; max-width: 600px; margin: 0 auto; display: block;">http://localhost:8080/sample-entry?bacterie=Entérobactéries&jour=Lundi&delai=24h&site=R1</textarea>
+    
+    <hr style="margin: 30px 0;">
+    
+    <button onclick="redirect()" style="padding: 15px; font-size: 18px; background: blue; color: white; border: none; cursor: pointer; margin-top: 20px;">
+        REDIRECTION PAR JAVASCRIPT
+    </button>
+    
+    <script>
+        function redirect() {
+            window.location.href = 'http://localhost:8080/sample-entry?bacterie=Entérobactéries&jour=Lundi&delai=24h&site=R1';
+        }
+
+        // Au chargement de la page, vérifier que l'URL est accessible
+        window.addEventListener('load', function() {
+            console.log('Page chargée, tentative de vérification du serveur...');
+            // Vérifier si l'URL est accessible
+            try {
+                fetch('http://localhost:8080')
+                .then(function(response) {
+                    if (response.ok) {
+                        console.log('Le serveur répond!');
+                        document.body.style.backgroundColor = '#e8ffe8';
+                        alert('Serveur accessible! Port 8080 fonctionne correctement.');
+                    } else {
+                        console.error('Erreur:', response.status);
+                        document.body.style.backgroundColor = '#ffe8e8';
+                        alert('Erreur: Le serveur répond avec le code ' + response.status);
+                    }
+                })
+                .catch(function(error) {
+                    console.error('Erreur de connexion:', error);
+                    document.body.style.backgroundColor = '#ffe8e8';
+                    alert('Erreur de connexion au serveur: ' + error);
+                });
+            } catch (e) {
+                console.error('Exception:', e);
+                alert('Exception: ' + e);
+            }
+        });
+    </script>
+</body>
+</html> 
